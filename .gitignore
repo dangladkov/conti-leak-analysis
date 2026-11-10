@@ -1,0 +1,18 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+
+# Research data, local configuration and generated investigative outputs.
+Leak-files/
+Leak files/
+messages*.csv
+translated_*.csv
+gibberish_*.csv
+victim_*.csv
+ioc-csvs/
+*_profiles.json
+user_summaries.json
+known_translations.json
+mpconfig.yaml
+
