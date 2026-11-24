@@ -1,0 +1,7 @@
+langchain
+langchain-ollama
+msticpy
+pandas
+tqdm
+matplotlib
+squarify

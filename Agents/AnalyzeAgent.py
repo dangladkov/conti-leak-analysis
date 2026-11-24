@@ -116,6 +116,7 @@ class PortfolioBuilder:
         return chunks
 
 
+    @staticmethod
     def build_user_prompt(user, text, previous_summary=""):
         return f"""You are a cybercrime intelligence analyst. Below are messages authored by a suspected member of a ransomware group nicknamed '{user}'. Write a concise findings report about this user.
 

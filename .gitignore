@@ -15,4 +15,5 @@ ioc-csvs/
 user_summaries.json
 known_translations.json
 mpconfig.yaml
+msticpyconfig.yaml
 

@@ -58,7 +58,7 @@ The thesis was solo, so the research questions, the pipeline, the runs on the un
 | [`Agents/AnalyzeAgent.py`](Agents/AnalyzeAgent.py) | IOC extraction, MSTICPy enrichment, member profiles, IP labels and the victim analysis |
 | [`notebooks/agent_framework.ipynb`](notebooks/agent_framework.ipynb) | Runs parsing and translation |
 | [`notebooks/analysis.ipynb`](notebooks/analysis.ipynb) | Runs enrichment, profiling and the victim analysis, and draws two of the thesis figures |
-| [`run_ollama_parallel.sh`](run_ollama_parallel.sh) | Starts Ollama with parallel slots (the file says 8, and the final run used 6) |
+| [`run_ollama_parallel.sh`](run_ollama_parallel.sh) | Starts Ollama with 6 parallel slots |
 | [`assets/`](assets) | The images in this README |
 
 The code is the final version from the end of the thesis with the commented-out experiments taken out. I replaced the five `eval()` calls, which ran on LLM output and on strings read back from CSV, with `ast.literal_eval()`, and the notebooks have their outputs cleared.
