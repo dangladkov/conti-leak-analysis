@@ -1,4 +1,4 @@
-![AI-driven analysis of the Conti ransomware leaks: parse, translate, enrich, profile](assets/banner.png)
+![A JupyterLab notebook cell with the project's name typed into the input and a one-line description of the pipeline as its output](assets/banner.png)
 
 # AI-driven analysis of the Conti ransomware leaks
 
@@ -11,9 +11,11 @@ Solo project, University of Twente • Research Project module (12) • April to
 
 ## Results / Demo
 
-![Four stages with their run times: parse 2.7 s, translate about 45 h, enrich about 2 h, profile about 12 h](assets/s1-stages.png)
+![Animated tqdm progress bars for parsing, translation, the VirusTotal and GeoIP lookups, IP labeling and the victim pass fill one after another under a bar for the full run](assets/run.gif)
 
-![The main results of the thesis](assets/s4-results.png)
+![Two gemma3:27b outputs: a victim row for Alter with a $200,000 ransom and a threatening tone, and an IP labeled malware_host with confidence 90](assets/answers.png)
+
+![Stacked bars that split each model's hand-graded translations into 3, 2, 1 and 0 points, with gemma3:12b ahead on full scores and lowest on zero-point ones](assets/scores.png)
 
 The pipeline took the leak from broken JSON files to English chats, IP threat data, profiles of the most active members and a table of potential victims. The whole run took about 60 hours on the university's JupyterLab server.
 
@@ -34,13 +36,13 @@ The pipeline took the leak from broken JSON files to English chats, IP threat da
 
 The pipeline is three Python modules in `Agents/`, which two Jupyter notebooks import and run on a JupyterLab server. The modules pass pandas tables and CSV files to each other, and every LLM call goes to models that Ollama serves locally.
 
-The leaked chats came as files of JSON objects written back to back, so `json.loads` fails on them. `ParseAgent.py` puts a comma between every `}{` with a regex, wraps each file in brackets and loads all the messages into one pandas table.
+![A graph of the JupyterLab server, where the two notebooks run the three modules and Ollama serves gemma3:12b and gemma3:27b. AnalyzeAgent.py also reads GeoLite2 and reaches VirusTotal outside the server through MSTICPy.](assets/architecture.png)
 
-![The concatenated JSON before parsing and the pandas table after it](assets/s2-parsing.png)
+The leaked chats came as files of JSON objects written back to back, so `json.loads` fails on them. `ParseAgent.py` puts a comma between every `}{` with a regex, wraps each file in brackets and loads all the messages into one pandas table.
 
 `TranslateAgent.py` translates the messages from Russian to English with gemma3:12b and saves each translation as soon as it's done, so a crashed run resumes where it stopped. Messages that are only links, numbers or symbols are skipped, and the most common phrases are translated once and reused. The rest go through the model on parallel workers, each with its neighbors in the chat as context. Under that load the model sometimes returned repeated or invented text, so a filter retries outputs with the wrong length or leftover Cyrillic.
 
-![Translation model scores, the skipped messages and the anomaly filter](assets/s3-translation.png)
+![Four Russian chat messages with their English meaning, each followed by a garbled translation and the filter rule that caught it](assets/filter.png)
 
 `AnalyzeAgent.py` pulls IP addresses, URLs, email addresses and crypto wallets out of the messages with regexes and saves each kind to its own table. It sends every IP through MSTICPy to VirusTotal for threat data and to the GeoLite2 database for location.
 
